@@ -28,7 +28,7 @@ import restartFlag from '@server/utils/restartFlag';
 import { getClientIp } from '@supercharge/request-ip';
 import { TypeormStore } from 'connect-typeorm/out';
 import cookieParser from 'cookie-parser';
-import csurf from 'csurf';
+import { doubleCsrf } from 'csrf-csrf';
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import * as OpenApiValidator from 'express-openapi-validator';
@@ -41,9 +41,9 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 
-const API_SPEC_PATH = path.join(__dirname, '../overseerr-api.yml');
+const API_SPEC_PATH = path.join(__dirname, '../jellyseerr-api.yml');
 
-logger.info(`Starting Overseerr version ${getAppVersion()}`);
+logger.info(`Starting Jellyseerr version ${getAppVersion()}`);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -72,23 +72,20 @@ app
 
     // Load Settings
     const settings = await getSettings().load();
-    restartFlag.initializeSettings(settings.main);
+    restartFlag.initializeSettings(settings);
 
     // Check if we force IPv4 first
-    if (process.env.forceIpv4First === 'true' || settings.main.forceIpv4First) {
+    if (
+      process.env.forceIpv4First === 'true' ||
+      settings.network.forceIpv4First
+    ) {
       dns.setDefaultResultOrder('ipv4first');
       net.setDefaultAutoSelectFamily(false);
     }
 
-    if (settings.main.dnsServers.trim() !== '') {
-      dns.setServers(
-        settings.main.dnsServers.split(',').map((server) => server.trim())
-      );
-    }
-
     // Register HTTP proxy
-    if (settings.main.proxy.enabled) {
-      await createCustomProxyAgent(settings.main.proxy);
+    if (settings.network.proxy.enabled) {
+      await createCustomProxyAgent(settings.network.proxy);
     }
 
     // Migrate library types
@@ -143,7 +140,7 @@ app
     await DiscoverSlider.bootstrapSliders();
 
     const server = express();
-    if (settings.main.trustProxy) {
+    if (settings.network.trustProxy) {
       server.enable('trust proxy');
     }
     server.use(cookieParser());
@@ -164,19 +161,24 @@ app
         next();
       }
     });
-    if (settings.main.csrfProtection) {
-      server.use(
-        csurf({
-          cookie: {
-            httpOnly: true,
-            sameSite: true,
-            secure: !dev,
-          },
-        })
-      );
+    if (settings.network.csrfProtection) {
+      const { doubleCsrfProtection, generateToken } = doubleCsrf({
+        getSecret: () => settings.clientId,
+        cookieName: 'XSRF-TOKEN',
+        cookieOptions: {
+          httpOnly: true,
+          sameSite: 'strict',
+          secure: !dev,
+        },
+        size: 64,
+        ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
+      });
+
+      server.use(doubleCsrfProtection);
+
       server.use((req, res, next) => {
-        res.cookie('XSRF-TOKEN', req.csrfToken(), {
-          sameSite: true,
+        res.cookie('XSRF-TOKEN', generateToken(req, res), {
+          sameSite: 'strict',
           secure: !dev,
         });
         next();
@@ -194,7 +196,7 @@ app
         cookie: {
           maxAge: 1000 * 60 * 60 * 24 * 30,
           httpOnly: true,
-          sameSite: settings.main.csrfProtection ? 'strict' : 'lax',
+          sameSite: settings.network.csrfProtection ? 'strict' : 'lax',
           secure: 'auto',
         },
         store: new TypeormStore({

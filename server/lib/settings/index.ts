@@ -115,7 +115,6 @@ export interface MainSettings {
   apiKey: string;
   applicationTitle: string;
   applicationUrl: string;
-  csrfProtection: boolean;
   cacheImages: boolean;
   defaultPermissions: number;
   defaultQuotas: {
@@ -124,17 +123,21 @@ export interface MainSettings {
   };
   hideAvailable: boolean;
   localLogin: boolean;
+  mediaServerLogin: boolean;
   newPlexLogin: boolean;
   discoverRegion: string;
   streamingRegion: string;
   originalLanguage: string;
-  trustProxy: boolean;
   mediaServerType: number;
   partialRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
-  forceIpv4First: boolean;
-  dnsServers: string;
   locale: string;
+}
+
+export interface NetworkSettings {
+  csrfProtection: boolean;
+  forceIpv4First: boolean;
+  trustProxy: boolean;
   proxy: ProxySettings;
 }
 
@@ -147,6 +150,7 @@ interface FullPublicSettings extends PublicSettings {
   applicationUrl: string;
   hideAvailable: boolean;
   localLogin: boolean;
+  mediaServerLogin: boolean;
   movie4kEnabled: boolean;
   series4kEnabled: boolean;
   discoverRegion: string;
@@ -313,6 +317,7 @@ export interface AllSettings {
   public: PublicSettings;
   notifications: NotificationSettings;
   jobs: Record<JobId, JobSettings>;
+  network: NetworkSettings;
 }
 
 const SETTINGS_PATH = process.env.CONFIG_DIRECTORY
@@ -331,7 +336,6 @@ class Settings {
         apiKey: '',
         applicationTitle: 'Jellyseerr',
         applicationUrl: '',
-        csrfProtection: false,
         cacheImages: false,
         defaultPermissions: Permission.REQUEST,
         defaultQuotas: {
@@ -340,27 +344,15 @@ class Settings {
         },
         hideAvailable: false,
         localLogin: true,
+        mediaServerLogin: true,
         newPlexLogin: true,
         discoverRegion: '',
         streamingRegion: '',
         originalLanguage: '',
-        trustProxy: false,
         mediaServerType: MediaServerType.NOT_CONFIGURED,
         partialRequestsEnabled: true,
         enableSpecialEpisodes: false,
-        forceIpv4First: false,
-        dnsServers: '',
         locale: 'en',
-        proxy: {
-          enabled: false,
-          hostname: '',
-          port: 8080,
-          useSsl: false,
-          user: '',
-          password: '',
-          bypassFilter: '',
-          bypassLocalAddresses: true,
-        },
       },
       plex: {
         name: '',
@@ -513,6 +505,21 @@ class Settings {
           schedule: '0 0 5 * * *',
         },
       },
+      network: {
+        csrfProtection: false,
+        trustProxy: false,
+        forceIpv4First: false,
+        proxy: {
+          enabled: false,
+          hostname: '',
+          port: 8080,
+          useSsl: false,
+          user: '',
+          password: '',
+          bypassFilter: '',
+          bypassLocalAddresses: true,
+        },
+      },
     };
     if (initialSettings) {
       this.data = merge(this.data, initialSettings);
@@ -582,6 +589,8 @@ class Settings {
       applicationUrl: this.data.main.applicationUrl,
       hideAvailable: this.data.main.hideAvailable,
       localLogin: this.data.main.localLogin,
+      mediaServerLogin: this.data.main.mediaServerLogin,
+      jellyfinExternalHost: this.data.jellyfin.externalHostname,
       jellyfinForgotPasswordUrl: this.data.jellyfin.jellyfinForgotPasswordUrl,
       movie4kEnabled: this.data.radarr.some(
         (radarr) => radarr.is4k && radarr.isDefault
@@ -620,6 +629,14 @@ class Settings {
 
   set jobs(data: Record<JobId, JobSettings>) {
     this.data.jobs = data;
+  }
+
+  get network(): NetworkSettings {
+    return this.data.network;
+  }
+
+  set network(data: NetworkSettings) {
+    this.data.network = data;
   }
 
   get clientId(): string {

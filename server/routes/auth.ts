@@ -56,8 +56,9 @@ authRoutes.post('/plex', async (req, res, next) => {
   }
 
   if (
-    settings.main.mediaServerType != MediaServerType.PLEX &&
-    settings.main.mediaServerType != MediaServerType.NOT_CONFIGURED
+    settings.main.mediaServerType != MediaServerType.NOT_CONFIGURED &&
+    (settings.main.mediaServerLogin === false ||
+      settings.main.mediaServerType != MediaServerType.PLEX)
   ) {
     return res.status(500).json({ error: 'Plex login is disabled' });
   }
@@ -157,7 +158,7 @@ authRoutes.post('/plex', async (req, res, next) => {
           });
         } else {
           logger.info(
-            'Sign-in attempt from Plex user with access to the media server; creating new Overseerr user',
+            'Sign-in attempt from Plex user with access to the media server; creating new Jellyseerr user',
             {
               label: 'API',
               ip: req.ip,
@@ -231,10 +232,13 @@ authRoutes.post('/jellyfin', async (req, res, next) => {
 
   //Make sure jellyfin login is enabled, but only if jellyfin && Emby is not already configured
   if (
-    settings.main.mediaServerType !== MediaServerType.JELLYFIN &&
-    settings.main.mediaServerType !== MediaServerType.EMBY &&
+    // media server not configured, allow login for setup
     settings.main.mediaServerType != MediaServerType.NOT_CONFIGURED &&
-    settings.jellyfin.ip !== ''
+    (settings.main.mediaServerLogin === false ||
+      // media server is neither jellyfin or emby
+      (settings.main.mediaServerType !== MediaServerType.JELLYFIN &&
+        settings.main.mediaServerType !== MediaServerType.EMBY &&
+        settings.jellyfin.ip !== ''))
   ) {
     return res.status(500).json({ error: 'Jellyfin login is disabled' });
   }
@@ -263,13 +267,14 @@ authRoutes.post('/jellyfin', async (req, res, next) => {
     // Try to find deviceId that corresponds to jellyfin user, else generate a new one
     let user = await userRepository.findOne({
       where: { jellyfinUsername: body.username },
+      select: { id: true, jellyfinDeviceId: true },
     });
 
     let deviceId = '';
     if (user) {
       deviceId = user.jellyfinDeviceId ?? '';
     } else {
-      deviceId = Buffer.from(`BOT_overseerr_${body.username ?? ''}`).toString(
+      deviceId = Buffer.from(`BOT_jellyseerr_${body.username ?? ''}`).toString(
         'base64'
       );
     }
@@ -441,7 +446,7 @@ authRoutes.post('/jellyfin', async (req, res, next) => {
       });
     } else if (!user) {
       logger.info(
-        'Sign-in attempt from Jellyfin user with access to the media server; creating new Overseerr user',
+        'Sign-in attempt from Jellyfin user with access to the media server; creating new Jellyseerr user',
         {
           label: 'API',
           ip: req.ip,
@@ -579,7 +584,7 @@ authRoutes.post('/local', async (req, res, next) => {
       .getOne();
 
     if (!user || !(await user.passwordMatch(body.password))) {
-      logger.warn('Failed sign-in attempt using invalid Overseerr password', {
+      logger.warn('Failed sign-in attempt using invalid Jellyseerr password', {
         label: 'API',
         ip: req.ip,
         email: body.email,
@@ -669,7 +674,7 @@ authRoutes.post('/local', async (req, res, next) => {
     return res.status(200).json(user?.filter() ?? {});
   } catch (e) {
     logger.error(
-      'Something went wrong authenticating with Overseerr password',
+      'Something went wrong authenticating with Jellyseerr password',
       {
         label: 'API',
         errorMessage: e.message,
