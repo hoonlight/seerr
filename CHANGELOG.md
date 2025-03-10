@@ -1,3 +1,43 @@
+# [2.4.0](https://github.com/fallenbagel/jellyseerr/compare/v2.3.0...v2.4.0) (2025-03-10)
+
+
+### Bug Fixes
+
+* add email requirement for local users ([#1389](https://github.com/fallenbagel/jellyseerr/issues/1389)) ([f0a6055](https://github.com/fallenbagel/jellyseerr/commit/f0a605577469248a2a7c2170be8310e106131c59)), closes [#900](https://github.com/fallenbagel/jellyseerr/issues/900) [#1367](https://github.com/fallenbagel/jellyseerr/issues/1367)
+* **api:** make item endpoints user-independent ([#1413](https://github.com/fallenbagel/jellyseerr/issues/1413)) ([9cc6930](https://github.com/fallenbagel/jellyseerr/commit/9cc6930fed31c834201fe4e8a2a2f456b878dec6))
+* assign the keep-alive value explicitly ([#1368](https://github.com/fallenbagel/jellyseerr/issues/1368)) ([438ccfe](https://github.com/fallenbagel/jellyseerr/commit/438ccfe9c37f4848b84e60a2ce64687e0b4e4dc0)), closes [#1365](https://github.com/fallenbagel/jellyseerr/issues/1365)
+* corrected spelling errors in function names ([#1366](https://github.com/fallenbagel/jellyseerr/issues/1366)) ([e035cd8](https://github.com/fallenbagel/jellyseerr/commit/e035cd84ae24502f43cf842d6d10621f28719682))
+* disable first page revalidation in useSWRInfinite ([#1386](https://github.com/fallenbagel/jellyseerr/issues/1386)) ([d563b36](https://github.com/fallenbagel/jellyseerr/commit/d563b361869d8183041cb6aea91279e17a513070)), closes [#1380](https://github.com/fallenbagel/jellyseerr/issues/1380)
+* disallow admins to edit other admins in bulk edit ([#1340](https://github.com/fallenbagel/jellyseerr/issues/1340)) ([2dbd109](https://github.com/fallenbagel/jellyseerr/commit/2dbd1096d2756a7213209419d1d4da36e7267959)), closes [#1309](https://github.com/fallenbagel/jellyseerr/issues/1309)
+* **emby:** throw the right error message if no library exists ([#1415](https://github.com/fallenbagel/jellyseerr/issues/1415)) ([67bd639](https://github.com/fallenbagel/jellyseerr/commit/67bd639a432d724bb34b7d6fed76c0bb66d94147))
+* fix remove from *arr in item details ([#1387](https://github.com/fallenbagel/jellyseerr/issues/1387)) ([9712f56](https://github.com/fallenbagel/jellyseerr/commit/9712f5605471a673edb3d25048dc08d1addd58db))
+* **helm:** no change, fixing OCI manifest corruption ([#1310](https://github.com/fallenbagel/jellyseerr/issues/1310)) ([418f0c2](https://github.com/fallenbagel/jellyseerr/commit/418f0c2eb844e8814aca0d280292e9fb372cc118))
+* **jobs:** run plex/jellyfin jobs only for the relevant media server ([#1331](https://github.com/fallenbagel/jellyseerr/issues/1331)) ([2b7974f](https://github.com/fallenbagel/jellyseerr/commit/2b7974fa06f196b40de270ad24e54b227143b081)), closes [#1329](https://github.com/fallenbagel/jellyseerr/issues/1329)
+* make watchlist buttons consistent ([#1272](https://github.com/fallenbagel/jellyseerr/issues/1272)) ([f247642](https://github.com/fallenbagel/jellyseerr/commit/f247642b76ebefd9eeb8aed485573b5d6b133673)), closes [#1270](https://github.com/fallenbagel/jellyseerr/issues/1270)
+* **mediarequest:** optimise more typeorm lifecycle triggers ([#1376](https://github.com/fallenbagel/jellyseerr/issues/1376)) ([80927b9](https://github.com/fallenbagel/jellyseerr/commit/80927b97058a219fca9fa580243cb3f966fb0b37)), closes [#513](https://github.com/fallenbagel/jellyseerr/issues/513)
+* missing plex.tv url in images remotePatterns ([#1356](https://github.com/fallenbagel/jellyseerr/issues/1356)) ([b29959b](https://github.com/fallenbagel/jellyseerr/commit/b29959b0637fd8add9598d2a3d05f9a0972b65df))
+* **overriderules:** allows every user to be added to the override rules ([#1333](https://github.com/fallenbagel/jellyseerr/issues/1333)) ([af8d6b4](https://github.com/fallenbagel/jellyseerr/commit/af8d6b475c0040f7b96f04e3783ac8b4c702b3db))
+* **overriderules:** correct disabled condition for override rule creation ([#1419](https://github.com/fallenbagel/jellyseerr/issues/1419)) ([1de518d](https://github.com/fallenbagel/jellyseerr/commit/1de518d9154ea7809688c73ebefdcac66d27bdf8))
+* **overriderules:** enable override rules only when a service exists ([#1417](https://github.com/fallenbagel/jellyseerr/issues/1417)) ([4e44282](https://github.com/fallenbagel/jellyseerr/commit/4e44282387e7b511daecd961cdc9da98cb4b0139))
+* resolve a vulnerability with admin token ([#1345](https://github.com/fallenbagel/jellyseerr/issues/1345)) ([620135a](https://github.com/fallenbagel/jellyseerr/commit/620135aeac6d9fc284a3daddcafd1964474d2789))
+* **settings:** remove dns server option ([#1416](https://github.com/fallenbagel/jellyseerr/issues/1416)) ([ada467e](https://github.com/fallenbagel/jellyseerr/commit/ada467ecf40c7c27d57ae69ad515bd245d7bb639)), closes [#1266](https://github.com/fallenbagel/jellyseerr/issues/1266)
+* **setup:** resolve looping library validation error message ([#1316](https://github.com/fallenbagel/jellyseerr/issues/1316)) ([6ab4632](https://github.com/fallenbagel/jellyseerr/commit/6ab463285d566c18ef0b4034fbfd0b5863a4f7a5))
+* **watchlist:** disable Jellyseerr's watchlist for Plex users ([#1398](https://github.com/fallenbagel/jellyseerr/issues/1398)) ([4eddbaa](https://github.com/fallenbagel/jellyseerr/commit/4eddbaa71b7972b6db33976102501fb8b6333206)), closes [#1344](https://github.com/fallenbagel/jellyseerr/issues/1344)
+
+
+### Features
+
+* add a robots.txt file ([#1335](https://github.com/fallenbagel/jellyseerr/issues/1335)) ([24d3f52](https://github.com/fallenbagel/jellyseerr/commit/24d3f523fc07ff4b28d041b2a74cfb5ab0a788a7)), closes [#1323](https://github.com/fallenbagel/jellyseerr/issues/1323)
+* add linked accounts page ([#883](https://github.com/fallenbagel/jellyseerr/issues/883)) ([64f05bc](https://github.com/fallenbagel/jellyseerr/commit/64f05bcad6956f7e8cbe3fdf5f430af1f30ddd6d))
+* **airdatebadge:** convert airDate from UTC to local timezone ([#1390](https://github.com/fallenbagel/jellyseerr/issues/1390)) ([a790b1a](https://github.com/fallenbagel/jellyseerr/commit/a790b1abccfa9c3f8272ade8cd055017905dd87f)), closes [#1373](https://github.com/fallenbagel/jellyseerr/issues/1373)
+* **api:** make rottentomatoes matching more robust ([#1265](https://github.com/fallenbagel/jellyseerr/issues/1265)) ([907ba6f](https://github.com/fallenbagel/jellyseerr/commit/907ba6fdea0341e8d0f429eaf6aaa404dbc7daff))
+* **helm:** Add possibility to pass volumes and volume mounts ([#1291](https://github.com/fallenbagel/jellyseerr/issues/1291)) ([62c1a70](https://github.com/fallenbagel/jellyseerr/commit/62c1a70b373ee574ad9ff98d322085976dbc7868))
+* revamp login page and support disabling media server login ([#1286](https://github.com/fallenbagel/jellyseerr/issues/1286)) ([73d8efa](https://github.com/fallenbagel/jellyseerr/commit/73d8efaa54888b5282624e618c1461c23653f0b9))
+* **settings:** add a disclaimer for dns servers and ipv4 first settings ([#1375](https://github.com/fallenbagel/jellyseerr/issues/1375)) ([1176171](https://github.com/fallenbagel/jellyseerr/commit/117617188ed988bd8a90e9fbe8bada08d5b14513))
+* **ui:** prevent password manager interference & improve service links ([#1396](https://github.com/fallenbagel/jellyseerr/issues/1396)) ([e97a13e](https://github.com/fallenbagel/jellyseerr/commit/e97a13e1e46298be9f334c8e6c6028fb8a99c53d)), closes [#3989](https://github.com/fallenbagel/jellyseerr/issues/3989)
+* update Jellyfin logo ([#1359](https://github.com/fallenbagel/jellyseerr/issues/1359)) ([c181cee](https://github.com/fallenbagel/jellyseerr/commit/c181cee328eb867f90d906757b8bddaeb74ba9f2))
+* upgrade chart to 2.0.0 ([#1268](https://github.com/fallenbagel/jellyseerr/issues/1268)) ([0ee3e69](https://github.com/fallenbagel/jellyseerr/commit/0ee3e69a6101f5a8818b6d4c5654d84f6aac322b))
+
 # [2.3.0](https://github.com/fallenbagel/jellyseerr/compare/v2.2.3...v2.3.0) (2025-01-16)
 
 
