@@ -1,3 +1,21 @@
+# [2.5.0](https://github.com/fallenbagel/jellyseerr/compare/v2.4.0...v2.5.0) (2025-03-11)
+
+
+### Bug Fixes
+
+* **ui:** correct media action icon size ([#1444](https://github.com/fallenbagel/jellyseerr/issues/1444)) ([771ecdf](https://github.com/fallenbagel/jellyseerr/commit/771ecdf7812004eec0f516cc424f9982936c8a2a)), closes [#1440](https://github.com/fallenbagel/jellyseerr/issues/1440)
+* **users:** correct user list for Postgres ([#1443](https://github.com/fallenbagel/jellyseerr/issues/1443)) ([5b998be](https://github.com/fallenbagel/jellyseerr/commit/5b998bef82388dccaaa462ff2ff3a526dd03338c)), closes [#1333](https://github.com/fallenbagel/jellyseerr/issues/1333)
+
+
+### Features
+
+* **helm:** upgrade jellyseerr to 2.4.0 ([#1438](https://github.com/fallenbagel/jellyseerr/issues/1438)) ([077e355](https://github.com/fallenbagel/jellyseerr/commit/077e355c775af92ff4dd2341543555d473c1abbb))
+
+
+### Reverts
+
+* reverts csrf-csrf back to csurf ([#1442](https://github.com/fallenbagel/jellyseerr/issues/1442)) ([21ab20b](https://github.com/fallenbagel/jellyseerr/commit/21ab20bba97102fe9eb9d4af4213a604c05e0acc)), closes [#1393](https://github.com/fallenbagel/jellyseerr/issues/1393)
+
 # [2.4.0](https://github.com/fallenbagel/jellyseerr/compare/v2.3.0...v2.4.0) (2025-03-10)
 
 
