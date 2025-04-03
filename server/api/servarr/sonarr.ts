@@ -184,7 +184,9 @@ class SonarrAPI extends ServarrBase<{
       // If the series already exists, we will simply just update it
       if (series.id) {
         series.monitored = options.monitored ?? series.monitored;
-        series.tags = options.tags ?? series.tags;
+        series.tags = options.tags
+          ? Array.from(new Set([...series.tags, ...options.tags]))
+          : series.tags;
         series.seasons = this.buildSeasonList(options.seasons, series.seasons);
 
         const newSeriesData = await this.put<SonarrSeries>(
@@ -366,14 +368,18 @@ class SonarrAPI extends ServarrBase<{
     if (tvdbId) {
       this.removeCache('/series/lookup', {
         term: `tvdb:${tvdbId}`,
+        headers: this.defaultHeaders,
       });
     }
     if (externalId) {
-      this.removeCache(`/series/${externalId}`);
+      this.removeCache(`/series/${externalId}`, {
+        headers: this.defaultHeaders,
+      });
     }
     if (title) {
       this.removeCache('/series/lookup', {
         term: title,
+        headers: this.defaultHeaders,
       });
     }
   };
