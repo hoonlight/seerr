@@ -1,3 +1,19 @@
+## [2.5.2](https://github.com/fallenbagel/jellyseerr/compare/v2.5.1...v2.5.2) (2025-04-03)
+
+
+### Bug Fixes
+
+* **auth:** Bitwarden autofill fix on local/Jellyfin login (2) ([#1487](https://github.com/fallenbagel/jellyseerr/issues/1487)) ([85bbc85](https://github.com/fallenbagel/jellyseerr/commit/85bbc857141d38bcf5244078437ed6a3318bba67))
+* **avatar:** fix avatar cache busting by using avatarVersion  ([#1537](https://github.com/fallenbagel/jellyseerr/issues/1537)) ([29034b3](https://github.com/fallenbagel/jellyseerr/commit/29034b350d35ebaed52556448e46436aeb644e77))
+* correct "Remove from *arr" button ([#1544](https://github.com/fallenbagel/jellyseerr/issues/1544)) ([8dc1d81](https://github.com/fallenbagel/jellyseerr/commit/8dc1d8196c67bee0e772941445c294f0ca367961)), closes [#1476](https://github.com/fallenbagel/jellyseerr/issues/1476) [#1494](https://github.com/fallenbagel/jellyseerr/issues/1494)
+* **helm:** apply annotations to pvc ([#1489](https://github.com/fallenbagel/jellyseerr/issues/1489)) ([e5ab847](https://github.com/fallenbagel/jellyseerr/commit/e5ab847547564869c3aa6443b1e22208c09a7810))
+* **jellyfin:** ensure deviceID is never empty ([#1538](https://github.com/fallenbagel/jellyseerr/issues/1538)) ([7438042](https://github.com/fallenbagel/jellyseerr/commit/7438042757cb0e81534cf9f766d84dd3ff57fd84))
+* **job:** handle media removal for 4k on the same server ([#1543](https://github.com/fallenbagel/jellyseerr/issues/1543)) ([63dc27d](https://github.com/fallenbagel/jellyseerr/commit/63dc27d400ecc80a18442fc42dd417cc03c3f9e1))
+* **job:** rename Plex Sync to Jellyfin Sync ([#1549](https://github.com/fallenbagel/jellyseerr/issues/1549)) ([2f6be95](https://github.com/fallenbagel/jellyseerr/commit/2f6be955b51e8920c8954413286577e6fea4aee2))
+* **migrations:** add missing Postgres migration and fix SQLite migration ([#1532](https://github.com/fallenbagel/jellyseerr/issues/1532)) ([0b0b76e](https://github.com/fallenbagel/jellyseerr/commit/0b0b76e58c583fc7c31d7821e7825e32065f7944)), closes [#1466](https://github.com/fallenbagel/jellyseerr/issues/1466)
+* **ui:** handle import-from-plex response as array ([#1510](https://github.com/fallenbagel/jellyseerr/issues/1510)) ([4cd02ba](https://github.com/fallenbagel/jellyseerr/commit/4cd02babbace98c01bcef153a50d34cb36dd1d4b))
+* **ui:** resolve discover language dropdown overlap ([#1497](https://github.com/fallenbagel/jellyseerr/issues/1497)) ([f5b3a52](https://github.com/fallenbagel/jellyseerr/commit/f5b3a526cb9b12c19e5ff6a79240e3d85685ff9b)), closes [#1475](https://github.com/fallenbagel/jellyseerr/issues/1475)
+
 ## [2.5.1](https://github.com/fallenbagel/jellyseerr/compare/v2.5.0...v2.5.1) (2025-03-17)
 
 
