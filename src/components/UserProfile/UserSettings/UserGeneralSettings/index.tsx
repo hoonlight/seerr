@@ -100,7 +100,9 @@ const UserGeneralSettings = () => {
 
   const UserGeneralSettingsSchema = Yup.object().shape({
     email:
-      user?.id === 1
+      // email is required for everybody except non-admin jellyfin users
+      user?.id === 1 ||
+      (user?.userType !== UserType.JELLYFIN && user?.userType !== UserType.EMBY)
         ? Yup.string()
             .email(intl.formatMessage(messages.validationemailformat))
             .required(intl.formatMessage(messages.validationemailrequired))
@@ -413,7 +415,7 @@ const UserGeneralSettings = () => {
                   </span>
                 </label>
                 <div className="form-input-area">
-                  <div className="form-input-field">
+                  <div className="form-input-field relative z-[22]">
                     <RegionSelector
                       name="discoverRegion"
                       value={values.discoverRegion ?? ''}
@@ -431,7 +433,7 @@ const UserGeneralSettings = () => {
                   </span>
                 </label>
                 <div className="form-input-area">
-                  <div className="form-input-field">
+                  <div className="form-input-field relative z-[21]">
                     <LanguageSelector
                       setFieldValue={setFieldValue}
                       serverValue={currentSettings.originalLanguage}
@@ -449,7 +451,7 @@ const UserGeneralSettings = () => {
                   </span>
                 </label>
                 <div className="form-input-area">
-                  <div className="form-input-field">
+                  <div className="form-input-field relative z-20">
                     <RegionSelector
                       name="streamingRegion"
                       value={values.streamingRegion || ''}

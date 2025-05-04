@@ -11,6 +11,7 @@ import { LanguageContext } from '@app/context/LanguageContext';
 import { SettingsProvider } from '@app/context/SettingsContext';
 import { UserContext } from '@app/context/UserContext';
 import type { User } from '@app/hooks/useUser';
+import { Permission, useUser } from '@app/hooks/useUser';
 import '@app/styles/globals.css';
 import '@app/utils/fetchOverride';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
@@ -128,6 +129,35 @@ const CoreApp: Omit<NextAppComponentType, 'origGetInitialProps'> = ({
     loadLocaleData(currentLocale).then(setMessages);
   }, [currentLocale]);
 
+  const { hasPermission } = useUser();
+
+  useEffect(() => {
+    const requestsCount = async () => {
+      const response = await fetch('/api/v1/request/count');
+      return await response.json();
+    };
+
+    // Cast navigator to a type that includes setAppBadge and clearAppBadge
+    // to avoid TypeScript errors while ensuring these methods exist before calling them.
+    const newNavigator = navigator as unknown as {
+      setAppBadge?: (count: number) => Promise<void>;
+      clearAppBadge?: () => Promise<void>;
+    };
+
+    if ('setAppBadge' in navigator) {
+      if (
+        !router.pathname.match(/(login|setup|resetpassword)/) &&
+        hasPermission(Permission.ADMIN)
+      ) {
+        requestsCount().then((data) =>
+          newNavigator?.setAppBadge?.(data.pending)
+        );
+      } else {
+        newNavigator?.clearAppBadge?.();
+      }
+    }
+  }, [hasPermission, router.pathname]);
+
   if (router.pathname.match(/(login|setup|resetpassword)/)) {
     component = <Component {...pageProps} />;
   } else {
@@ -194,6 +224,7 @@ CoreApp.getInitialProps = async (initialProps) => {
     movie4kEnabled: false,
     series4kEnabled: false,
     localLogin: true,
+    mediaServerLogin: true,
     discoverRegion: '',
     streamingRegion: '',
     originalLanguage: '',
@@ -211,7 +242,9 @@ CoreApp.getInitialProps = async (initialProps) => {
   if (ctx.res) {
     // Check if app is initialized and redirect if necessary
     const res = await fetch(
-      `http://localhost:${process.env.PORT || 5055}/api/v1/settings/public`
+      `http://${process.env.HOST || 'localhost'}:${
+        process.env.PORT || 5055
+      }/api/v1/settings/public`
     );
     if (!res.ok) throw new Error();
     currentSettings = await res.json();
@@ -229,7 +262,9 @@ CoreApp.getInitialProps = async (initialProps) => {
       try {
         // Attempt to get the user by running a request to the local api
         const res = await fetch(
-          `http://localhost:${process.env.PORT || 5055}/api/v1/auth/me`,
+          `http://${process.env.HOST || 'localhost'}:${
+            process.env.PORT || 5055
+          }/api/v1/auth/me`,
           {
             headers:
               ctx.req && ctx.req.headers.cookie
